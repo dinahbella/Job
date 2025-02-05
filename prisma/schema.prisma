@@ -15,12 +15,50 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  // Optional for WebAuthn support
  
+userType UserType
+
+ onboardingCompleted Boolean @default(false)
+
+ Company Company?
+Individual Individual?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
- 
+enum UserType{
+  COMPANY
+  INDIVIDUAL
+}
+ model Company{
+  id String @id @default(uuid())
+  name String
+    location String
+  description String
+  logo String
+  website String
+    xAccount String
+
+user User @relation(fields: [userId], references: [id])
+userId String @unique
+
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
+ }
+
+ model Individual{
+    id String @id @default(uuid())
+  name String
+  description String
+  resume String
+
+  user User @relation(fields: [userId], references: [id])
+userId String @unique
+  
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
+
+ }
 model Account {
   userId            String
   type              String

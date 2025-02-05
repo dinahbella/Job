@@ -57,7 +57,7 @@ const LoginForm = async () => {
   }
   return (
     <div className="flex flex-col items-center gap-4">
-      <Card className="w-[350px]">
+      <Card>
         <CardHeader className="flex items-center">
           <CardTitle className="flex items-center">Welcome Back</CardTitle>
           <CardDescription>
