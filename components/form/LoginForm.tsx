@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,6 +7,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { SVGProps } from "react";
+import { auth, signIn } from "@/app/utils/auth";
+import SubmitButton from "../general/SubmitButton";
+import { redirect } from "next/navigation";
 const Github = (props: SVGProps<SVGSVGElement>) => (
   <svg
     viewBox="0 0 256 250"
@@ -48,7 +50,11 @@ const Google = (props: SVGProps<SVGSVGElement>) => (
     />
   </svg>
 );
-const LoginForm = () => {
+const LoginForm = async () => {
+  const session = await auth();
+  if (session?.user) {
+    return redirect("/");
+  }
   return (
     <div className="flex flex-col items-center gap-4">
       <Card className="w-[350px]">
@@ -60,17 +66,35 @@ const LoginForm = () => {
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-4">
-            <form>
-              <Button className="w-full" variant="outline">
-                <Github className="size-4" />
-                Login with Github
-              </Button>
+            <form
+              action={async () => {
+                "use server";
+                await signIn("github", {
+                  redirectTo: "/",
+                });
+              }}
+            >
+              <SubmitButton
+                text="Login with Github"
+                variant="outline"
+                width="w-full"
+                icon={<Github />}
+              />
             </form>
-            <form>
-              <Button className="w-full" variant="outline">
-                <Google className="size-4" />
-                Login with Google
-              </Button>
+            <form
+              action={async () => {
+                "use server";
+                await signIn("google", {
+                  redirectTo: "/",
+                });
+              }}
+            >
+              <SubmitButton
+                text="Login with Google"
+                variant="outline"
+                width="w-full"
+                icon={<Google />}
+              />
             </form>
           </div>
         </CardContent>
