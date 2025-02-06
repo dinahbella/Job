@@ -4,6 +4,7 @@ import { BriefcaseBusiness } from "lucide-react";
 import { Button, buttonVariants } from "../ui/button";
 import { ThemeToggle } from "./ThemeToggle";
 import { auth, signOut } from "@/app/utils/auth";
+import UserDropdown from "./UserDropdown";
 
 const Navbar = async () => {
   const session = await auth();
@@ -16,22 +17,21 @@ const Navbar = async () => {
           Job<span className="text-primary">Portal</span>
         </h1>
       </Link>
-      <div className="flex items-center gap-3">
+      <div className="hidden md:flex items-center gap-5">
         <ThemeToggle />
-        {/* <Button>Login</Button> */}
+        <Link className={buttonVariants({ size: "lg" })} href="/post-job">
+          Post Job
+        </Link>
         {session?.user ? (
-          <form
-            action={async () => {
-              "use server";
-              await signOut();
-            }}
-          >
-            <Button>Logout</Button>
-          </form>
+          <UserDropdown
+            email={session?.user?.email as string}
+            name={session?.user?.name as string}
+            image={session?.user?.image as string}
+          />
         ) : (
           <Link
-            href={"/login"}
-            className={buttonVariants({ variant: "outline", size: "lg" })}
+            className={buttonVariants({ size: "lg", variant: "outline" })}
+            href="/login"
           >
             Login
           </Link>
