@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { XIcon } from "lucide-react";
 import Image from "next/image";
 import { UploadDropzone } from "@/components/general/UploadThingExport";
+import PdfImage from "@/public/pdf.png";
 
 const IndividualForm = () => {
   const form = useForm<z.infer<typeof individualSchema>>({
@@ -42,96 +43,93 @@ const IndividualForm = () => {
     }
   }
   return (
-    <div>
-      <Form {...form}>
-        <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
-          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6"> */}
-          <FormField
-            control={form.control}
-            name="name"
-            render={(field) => (
-              <FormItem>
-                <FormLabel>Full Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter full Name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description"
-            render={(field) => (
-              <FormItem>
-                <FormLabel>Short Bio</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Tell us about your yourself... "
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="resume"
-            render={(field) => (
-              <FormItem>
-                <FormLabel>Resume (PDF) </FormLabel>
-                <FormControl>
-                  <div>
-                    {field.field.value ? (
-                      <div className="relative w-fit">
-                        <Image
-                          src={field.field.value}
-                          alt="Company logo"
-                          width={100}
-                          height={100}
-                          className="rounded-lg"
-                        />
-                        <Button
-                          className="absolute -top-2 -right-2"
-                          type="button"
-                          variant="destructive"
-                          size="icon"
-                          onClick={() => {
-                            field.field.onChange("");
-                          }}
-                        >
-                          <XIcon />
-                        </Button>
-                      </div>
-                    ) : (
-                      <UploadDropzone
-                        endpoint="resumeUploader"
-                        onClientUploadComplete={(res) => {
-                          field.field.onChange(res[0].url);
+    <Form {...form}>
+      <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
+          control={form.control}
+          name="name"
+          render={(field) => (
+            <FormItem>
+              <FormLabel>Full Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter full Name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="description"
+          render={(field) => (
+            <FormItem>
+              <FormLabel>Short Bio</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Tell us about your yourself... "
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="resume"
+          render={(field) => (
+            <FormItem>
+              <FormLabel>Resume (PDF)</FormLabel>
+              <FormControl>
+                <div>
+                  {field.field.value ? (
+                    <div className="relative w-fit">
+                      <Image
+                        src={PdfImage}
+                        alt="pdf resume image"
+                        width={100}
+                        height={100}
+                        className="rounded-lg"
+                      />
+                      <Button
+                        className="absolute -top-2 -right-2"
+                        type="button"
+                        variant="destructive"
+                        size="icon"
+                        onClick={() => {
+                          field.field.onChange("");
                         }}
-                        onUploadError={(error: Error) => {
-                          // Do something with the error.
-                          alert(`ERROR! ${error.message}`);
-                        }}
-                        className="ut-button:bg-primary
+                      >
+                        <XIcon />
+                      </Button>
+                    </div>
+                  ) : (
+                    <UploadDropzone
+                      endpoint="resumeUploader"
+                      onClientUploadComplete={(res) => {
+                        field.field.onChange(res[0].url);
+                      }}
+                      onUploadError={(error: Error) => {
+                        // Do something with the error.
+                        alert(`ERROR! ${error.message}`);
+                      }}
+                      className="ut-button:bg-primary
                      ut-button:text-white 
                      ut-button:hover:bg-primary/90 
                      ut-label:text-muted-foreground ut-allowed-content:text-muted-foreground"
-                      />
-                    )}
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit" disabled={pending} className="w-full">
-            {pending ? "Loading..." : "Continue"}
-          </Button>
-        </form>
-      </Form>
-    </div>
+                    />
+                  )}
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit" disabled={pending} className="w-full">
+          {pending ? "Loading..." : "Continue"}
+        </Button>
+      </form>
+    </Form>
   );
 };
 
