@@ -25,6 +25,7 @@ import {
 } from "../ui/select";
 import { countryList } from "@/app/utils/countriesList";
 import SalaryRange from "../general/SalaryRange";
+import JobDescription from "../textEditor/JobDescription";
 
 const CreateJobForm = () => {
   const form = useForm<z.infer<typeof jobSchema>>({
@@ -153,6 +154,19 @@ const CreateJobForm = () => {
                 </FormControl>
               </FormItem>
             </div>
+            <FormField
+              control={form.control}
+              name="jobDescription"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Job Description</FormLabel>
+                  <FormControl>
+                    <JobDescription />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </CardContent>
         </Card>
       </form>

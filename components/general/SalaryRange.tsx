@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Slider } from "../ui/slider";
 import { Control, useController } from "react-hook-form";
+import formatCurrency from "@/app/utils/formatCurrency";
 
 interface iAppProps {
   control: Control<any>;
@@ -45,6 +46,10 @@ const SalaryRange = ({
         min={minSalary}
         step={step}
       />
+      <div className="flex justify-between items-center">
+        <span>{formatCurrency(range[0])}</span>
+        <span>{formatCurrency(range[1])}</span>
+      </div>
     </div>
   );
 };
