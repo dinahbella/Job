@@ -13,6 +13,7 @@ import Snap from "@/public/snap.png";
 import Ford from "@/public/ford.png";
 import Gmail from "@/public/gmail.png";
 import Image from "next/image";
+import CreateJobForm from "@/components/form/CreateJobForm";
 
 const companies = [
   { id: 0, name: "Arcjet", logo: AjLogo },
@@ -53,11 +54,7 @@ const stats = [
 const PostJob = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 mt-5 gap-5">
-      <Card className="col-span-1 lg:col-span-2">
-        <CardHeader>
-          <CardTitle></CardTitle>
-        </CardHeader>
-      </Card>
+      <CreateJobForm />
       <div className=" col-span-1">
         <Card className="">
           <CardHeader>

@@ -31,32 +31,32 @@ enum UserType{
   INDIVIDUAL
 }
  model Company{
-  id String @id @default(uuid())
-  
-  name String
-  location String
-  description String
-  logo String
-  website String
-  xAccount String?
+   id String @id @default(uuid())
 
-user User @relation(fields: [userId], references: [id])
-userId String @unique
-createdAt DateTime @default(now())
-updatedAt DateTime @updatedAt
+  name     String
+  location String
+  logo     String
+  website  String
+  xAccount String?
+  about    String
+  user     User    @relation(fields: [userId], references: [id])
+  userId   String  @unique
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  JobPost   JobPost[]
  }
 
  model Individual{
-    id String @id @default(uuid())
-  name String
-  description String
+    id     String @id @default(uuid())
+  name   String
+  about  String
   resume String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
 
-  user User @relation(fields: [userId], references: [id])
-userId String @unique
-  
-createdAt DateTime @default(now())
-updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
  }
 model Account {
@@ -98,3 +98,30 @@ model VerificationToken {
   @@id([identifier, token])
 }
  
+model JobPost {
+  id String @id @default(uuid())
+
+  jobTitle        String
+  employmentType  String
+  location        String
+  salaryFrom      Int
+  salaryTo        Int
+  jobDescription  String
+  listingDuration Int
+  benefits        String[]
+
+  status       JobPostStatus @default(DRAFT)
+  applications Int           @default(0)
+
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  companyId String
+
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+enum JobPostStatus {
+  DRAFT
+  ACTIVE
+  EXPIRED
+}
