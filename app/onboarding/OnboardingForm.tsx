@@ -6,6 +6,7 @@ import { BriefcaseBusiness } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import CompanyForm from "./CompanyForm";
+import IndividualForm from "./IndividualForm";
 
 type UserSelectionType = "company" | "individual" | null;
 
@@ -23,11 +24,7 @@ const OnboardingForm = () => {
       case 1:
         return <UserTypeForm onSelect={handleUserTypeSelection} />;
       case 2:
-        return userType === "company" ? (
-          <CompanyForm />
-        ) : (
-          <p>Individual form</p>
-        );
+        return userType === "company" ? <CompanyForm /> : <IndividualForm />;
       default:
         return null;
     }

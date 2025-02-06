@@ -16,7 +16,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
  
-userType UserType
+userType UserType?
 
  onboardingCompleted Boolean @default(false)
 
@@ -32,16 +32,16 @@ enum UserType{
 }
  model Company{
   id String @id @default(uuid())
+  
   name String
-    location String
+  location String
   description String
   logo String
   website String
-    xAccount String
+  xAccount String?
 
 user User @relation(fields: [userId], references: [id])
 userId String @unique
-
 createdAt DateTime @default(now())
 updatedAt DateTime @updatedAt
  }
