@@ -21,7 +21,7 @@ const JobDescription = (field: iAppProps) => {
     editorProps: {
       attributes: {
         class:
-          "min-h-[350px] p-4 max-w-none focus:outline-none prose prose-sm sm:prose lg:prose-lg xl:prose-xl dark:prose-invert",
+          "min-h-[300px] p-4 max-w-none focus:outline-none prose prose-sm sm:prose lg:prose-lg xl:prose-xl dark:prose-invert",
       },
     },
     onUpdate: ({ editor }) => {
