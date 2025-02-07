@@ -161,7 +161,7 @@ const CreateJobForm = () => {
                 <FormItem>
                   <FormLabel>Job Description</FormLabel>
                   <FormControl>
-                    <JobDescription />
+                    <JobDescription field={field as any} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
