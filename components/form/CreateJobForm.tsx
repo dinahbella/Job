@@ -27,6 +27,11 @@ import { countryList } from "@/app/utils/countriesList";
 import SalaryRange from "../general/SalaryRange";
 import JobDescription from "../textEditor/JobDescription";
 import BenefitsSelector from "../general/BenefitSelector";
+import { Textarea } from "../ui/textarea";
+import { Button } from "../ui/button";
+import { XIcon } from "lucide-react";
+import { UploadDropzone } from "../general/UploadThingExport";
+import Image from "next/image";
 
 const CreateJobForm = () => {
   const form = useForm<z.infer<typeof jobSchema>>({
@@ -55,7 +60,7 @@ const CreateJobForm = () => {
           <CardHeader>
             <CardTitle>Job Information</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
@@ -176,6 +181,166 @@ const CreateJobForm = () => {
                   <FormLabel>Benefits</FormLabel>
                   <FormControl>
                     <BenefitsSelector field={field as any} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Company Information</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="companyName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Company Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Company Name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="companyLocation"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Company Location</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      {...field}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select location" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Worldwide</SelectLabel>
+                          <SelectItem value="Full-time">
+                            <span>🌎</span>{" "}
+                            <span className="pl-2">Worldwide / Remote</span>
+                          </SelectItem>
+                        </SelectGroup>
+                        <SelectGroup>
+                          <SelectLabel>Location</SelectLabel>
+                          {countryList.map((country) => (
+                            <SelectItem key={country.code} value={country.name}>
+                              <span>{country.flagEmoji}</span>
+                              <span className="pl-4">{country.name}</span>
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="companyWebsite"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Company Website</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Company Website" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="companyXaccount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Company X Account</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Twitter" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <FormField
+              control={form.control}
+              name="companyDescription"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Company Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Say something about your company ..."
+                      {...field}
+                      className="min-h-[120px]"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="companyLogo"
+              render={(field) => (
+                <FormItem>
+                  <FormLabel>Company Logo</FormLabel>
+                  <FormControl>
+                    <div>
+                      {field.field.value ? (
+                        <div className="relative w-fit">
+                          <Image
+                            src={field.field.value}
+                            alt="Company logo"
+                            width={100}
+                            height={100}
+                            className="rounded-lg"
+                          />
+                          <Button
+                            className="absolute -top-2 -right-2"
+                            type="button"
+                            variant="destructive"
+                            size="icon"
+                            onClick={() => {
+                              field.field.onChange("");
+                            }}
+                          >
+                            <XIcon />
+                          </Button>
+                        </div>
+                      ) : (
+                        <UploadDropzone
+                          endpoint="imageUploader"
+                          {...field}
+                          onClientUploadComplete={(res) => {
+                            field.field.onChange(res[0].url);
+                          }}
+                          onUploadError={(error: Error) => {
+                            // Do something with the error.
+                            alert(`ERROR! ${error.message}`);
+                          }}
+                          className="ut-button:bg-primary
+                     ut-button:text-white 
+                     ut-button:hover:bg-primary/90 
+                     ut-label:text-muted-foreground ut-allowed-content:text-muted-foreground"
+                        />
+                      )}
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
